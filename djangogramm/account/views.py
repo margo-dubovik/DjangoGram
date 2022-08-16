@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 # Create your views here.
-def users_list(request):
-    return render(request, "account/users_list.html")
+def home(request):
+    return render(request, "account/home.html")
 
 
 def register(request):
