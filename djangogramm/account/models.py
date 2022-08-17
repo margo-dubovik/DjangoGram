@@ -14,7 +14,7 @@ class UserProfile(models.Model):
     #     blank=True
     # )
 
-        # avatar = models.ImageField(upload_to='avatar', blank=True)
+    avatar = models.ImageField(upload_to='profile_image', blank=True)
 
     def __str__(self):
         return self.user.username
