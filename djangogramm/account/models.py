@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.conf import settings
 
 
 # Create your models here.
@@ -18,6 +19,14 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            print("avatar_url=", self.avatar.url)
+            return self.avatar.url
+        else:
+            return f"{settings.MEDIA_URL}/profile_image/default_profile_img.jpg"
 
 
 def create_user_profile(sender, instance, created, **kwargs):
