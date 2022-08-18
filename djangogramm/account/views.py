@@ -6,7 +6,7 @@ from .models import UserProfile
 # Create your views here.
 @login_required
 def home(request):
-    return render(request, "djangogramm/account/profile.html")
+    return render(request, "account/profile.html")
 
 
 def register(request):

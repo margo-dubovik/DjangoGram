@@ -3,7 +3,6 @@ from account.models import UserProfile
 from django.template.defaultfilters import slugify
 
 
-# Create your models here.
 class Post(models.Model):
     userprofile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)

@@ -9,9 +9,7 @@ from .models import Image
 # Create your views here.
 @login_required
 def post(request):
-    ImageFormSet = modelformset_factory(Image,
-                                        form=ImageForm, extra=3)
-    # 'extra' means the number of photos that you can upload   ^
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3)
     if request.method == 'POST':
 
         postForm = PostForm(request.POST)
@@ -28,9 +26,8 @@ def post(request):
                     image = form['image']
                     photo = Image(post=post_form, image=image)
                     photo.save()
-            # use django messages framework
             messages.success(request,
-                             "Yeeew, check it out on the home page!")
+                             "Post created successfully!")
             return HttpResponseRedirect("/")
         else:
             print(postForm.errors, formset.errors)
@@ -38,4 +35,4 @@ def post(request):
         postForm = PostForm()
         formset = ImageFormSet(queryset=Image.objects.none())
     return render(request, 'post_creation.html',
-                  {'postForm': postForm, 'formset': formset})
+                  {'form': postForm, 'formset': formset})
