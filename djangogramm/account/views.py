@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 
 # Create your views here.
+@login_required
 def home(request):
-    return render(request, "account/home.html")
+    return render(request, "djangogramm/account/profile.html")
 
 
 def register(request):
