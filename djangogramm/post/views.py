@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from .forms import PostForm
@@ -19,7 +19,7 @@ def new_post(request):
             for image in images:
                 photo = Image(post=post_form, image=image)
                 photo.save()
-            return HttpResponseRedirect("/")
+            return redirect("/")
         else:
             print(postForm.errors)
     else:
@@ -33,6 +33,14 @@ def all_posts(request):
 
 @login_required
 def post_details(request, pk):
-    post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     post_images = Image.objects.filter(post_id=pk).all()
     return render(request, 'post_details.html', {'post': post, 'post_images': post_images})
+
+
+@login_required
+def like_view(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user.userprofile)
+    return redirect(f'/post/{pk}')
+

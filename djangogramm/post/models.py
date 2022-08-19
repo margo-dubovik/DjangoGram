@@ -8,9 +8,13 @@ class Post(models.Model):
     title = models.CharField(max_length=150)
     body = models.TextField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(UserProfile, related_name='liked_posts')
 
     def __str__(self):
         return self.title
+
+    def total_likes(self):
+        return self.likes.count()
 
 
 def get_image_filename(instance, filename):
@@ -22,3 +26,4 @@ def get_image_filename(instance, filename):
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_image_filename)
+

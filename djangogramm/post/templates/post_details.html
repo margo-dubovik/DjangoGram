@@ -7,5 +7,14 @@
     {% for image in post_images %}
         <img src="{{ image.image.url }}" width="240" alt="post_image">
     {% endfor %}
+    <br/><br/>
+    <a href="{% url 'all-posts' %}" class="btn btn-secondary">Back</a>
+    <br/><br/>
+    <form action="{% url 'like_post' post.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" name="post_id" value="{{ post.id }}"
+                class="btn btn-primary btn-sm">Like</button> <small>{{ post.total_likes }} like(s)</small>
+    </form>
+
 </div>
 {% endblock %}
