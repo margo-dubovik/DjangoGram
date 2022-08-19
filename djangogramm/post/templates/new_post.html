@@ -10,8 +10,10 @@
         <h1>Add new post</h1>
         {% csrf_token %}
         {{ form.as_p }}
-        <br />
-        {{ formset.as_p }}
+        <div class="form-group m-3">
+            <label>Upload images</label>
+            <input required name="images" type="file" multiple class="form-control-file">
+        </div>
         <button type="submit">Submit</button>
     </form>
 </div>
