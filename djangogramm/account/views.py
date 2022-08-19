@@ -6,7 +6,8 @@ from .models import UserProfile
 # Create your views here.
 @login_required
 def home(request):
-    return render(request, "account/profile.html")
+    args = {'user': request.user}
+    return render(request, "account/home.html", args)
 
 
 def register(request):
