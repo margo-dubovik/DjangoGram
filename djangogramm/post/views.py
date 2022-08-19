@@ -39,9 +39,8 @@ def post_details(request, pk):
     if post.likes.filter(user_id=request.user.id).exists():
         liked = True
 
-    post_images = Image.objects.filter(post_id=pk).all()
     return render(request, 'post_details.html',
-                  {'post': post, 'post_images': post_images, 'liked': liked})
+                  {'post': post, 'liked': liked})
 
 
 @login_required

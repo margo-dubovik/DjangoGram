@@ -4,23 +4,22 @@
     <h1>{{ post.title }}</h1>
     <small>{{ post.userprofile }}</small>
     <p>{{ post.body }}</p>
-    {% for image in post_images %}
+
+    {% for image in post.post_images  %}
         <img src="{{ image.image.url }}" width="240" alt="post_image">
     {% endfor %}
     <br/><br/>
-    <a href="{% url 'all-posts' %}" class="btn btn-secondary">Back</a>
-    <br/><br/>
-
     <form action="{% url 'like_post' post.pk %}" method="POST">
         {% csrf_token %}
-
         {% if liked %}
             <button type="submit" name="post_id" value="{{ post.id }}"
                     class="btn btn-danger btn-sm">Unlike</button> <small>{{ post.total_likes }} like(s)</small>
         {% else %}
             <button type="submit" name="post_id" value="{{ post.id }}"
                     class="btn btn-primary btn-sm">Like</button> <small>{{ post.total_likes }} like(s)</small>
+        {% endif %}
     </form>
-    {% endif %}
+    <br/>
+    <a href="{% url 'all-posts' %}" class="btn btn-secondary">Back</a>
 </div>
 {% endblock %}

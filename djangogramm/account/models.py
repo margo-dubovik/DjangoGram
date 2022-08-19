@@ -16,7 +16,6 @@ class UserProfile(models.Model):
     @property
     def avatar_url(self):
         if self.avatar:
-            print("avatar_url=", self.avatar.url)
             return self.avatar.url
         else:
             return f"{settings.MEDIA_URL}/profile_image/default_profile_img.jpg"

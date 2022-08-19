@@ -5,8 +5,12 @@
     <ul>
         {% for post in post_list %}
         <li>
-            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a>, {{ post.userprofile }}<br>
+            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> {{ post.userprofile }}<br>
             {{ post.body }}
+            <br/>
+             {% for image in post.post_images %}
+                <img src="{{ image.image.url }}" class="img-thumbnail" height="100" width="100" alt="post_image">
+            {% endfor %}
         </li>
         {% endfor %}
     </ul>
