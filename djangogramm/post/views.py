@@ -18,7 +18,7 @@ def post(request):
 
         if postForm.is_valid() and formset.is_valid():
             post_form = postForm.save(commit=False)
-            post_form.user = request.user
+            post_form.userprofile = request.user.userprofile
             post_form.save()
 
             for form in formset.cleaned_data:
