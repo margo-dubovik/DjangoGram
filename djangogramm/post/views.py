@@ -34,4 +34,5 @@ def all_posts(request):
 @login_required
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
-    return render(request, 'post_details.html', {'post': post})
+    post_images = Image.objects.filter(post_id=pk).all()
+    return render(request, 'post_details.html', {'post': post, 'post_images': post_images})

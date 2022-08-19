@@ -4,5 +4,8 @@
     <h1>{{ post.title }}</h1>
     <small>{{ post.userprofile }}</small>
     <p>{{ post.body }}</p>
+    {% for image in post_images %}
+        <img src="{{ image.image.url }}" width="240" alt="post_image">
+    {% endfor %}
 </div>
 {% endblock %}
