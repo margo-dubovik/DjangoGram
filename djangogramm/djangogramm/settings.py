@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 'simple_history',
     'account',
     'post',
+    'taggit',
 ]
 
 MIDDLEWARE = [

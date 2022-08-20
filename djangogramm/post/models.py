@@ -1,10 +1,9 @@
 from django.db import models
 from account.models import UserProfile
 from django.template.defaultfilters import slugify
+from taggit.managers import TaggableManager
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=250)
 
 
 class Post(models.Model):
@@ -13,7 +12,7 @@ class Post(models.Model):
     body = models.TextField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(UserProfile, related_name='liked_posts')
-    tags = models.ManyToManyField(Tag, related_name='post_tags')
+    tags = TaggableManager()
 
     def __str__(self):
         return self.title

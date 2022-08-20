@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from .forms import PostForm
 from .models import Post, Image
+from account.models import UserProfile
 
 
 @login_required
@@ -12,14 +13,19 @@ def new_post(request):
         images = request.FILES.getlist('images')
 
         if postForm.is_valid():
-            post_form = postForm.save(commit=False)
-            post_form.userprofile = request.user.userprofile
-            post_form.save()
+            title = postForm.cleaned_data['title']
+            body = postForm.cleaned_data['body']
+            tags = postForm.cleaned_data['tags']
+            newpost = Post(title=title, body=body)
+            newpost.userprofile = request.user.userprofile
+            newpost.save()
+            for tag in tags:
+                newpost.tags.add(tag)
 
             for image in images:
-                photo = Image(post=post_form, image=image)
+                photo = Image(post=newpost, image=image)
                 photo.save()
-            return redirect("/")
+            return redirect("/post/all")
         else:
             print(postForm.errors)
     else:
