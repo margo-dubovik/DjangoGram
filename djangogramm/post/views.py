@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from .forms import PostForm
 from .models import Post, Image
-from account.models import UserProfile
 
+from taggit.models import Tag
+from account.models import UserProfile
 
 @login_required
 def new_post(request):
@@ -33,9 +34,14 @@ def new_post(request):
     return render(request, 'new_post.html', {'form': postForm})
 
 @login_required
-def all_posts(request):
-    post_list = Post.objects.all()
-    return render(request, 'all_posts.html', {'post_list': post_list})
+def all_posts(request, tag_slug=None):
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = Post.objects.filter(tags__in=[tag])
+    else:
+        post_list = Post.objects.all()
+    return render(request, 'all_posts.html', {'post_list': post_list, 'tag': tag})
 
 @login_required
 def post_details(request, pk):

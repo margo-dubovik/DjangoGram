@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="container">
+    {% if tag %}
+    <h1>Posts with tag {{ tag.name }}</h1>
+    {% else %}
     <h1>Posts</h1>
+    {% endif %}
     <ul>
         {% for post in post_list %}
         <li>
