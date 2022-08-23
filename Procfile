@@ -1,1 +1,1 @@
-python djangogramm/manage.py runserver
+web: python djangogramm/manage.py runserver 0.0.0.0:$PORT
