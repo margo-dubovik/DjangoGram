@@ -3,6 +3,7 @@ from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 
+
 # Create your views here.
 @login_required
 def home(request):
@@ -20,11 +21,24 @@ def register(request):
 
     else:
         form = RegistrationForm()
+        return render(request, 'account/reg_form.html', {'form': form})
 
-        args = {'form': form}
-        return render(request, 'account/reg_form.html', args)
 
 @login_required
 def view_profile(request):
     args = {'user': request.user}
     return render(request, 'account/profile.html', args)
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        avatar = request.FILES.get('avatar')
+        bio = request.POST['bio']
+        profile = request.user.userprofile
+        profile.avatar = avatar
+        profile.bio = bio
+        profile.save()
+        return redirect('/account/profile')
+    else:
+        return render(request, 'account/edit_profile.html')

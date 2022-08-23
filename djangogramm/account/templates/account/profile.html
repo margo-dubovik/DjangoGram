@@ -5,6 +5,9 @@
     <img src="{{ user.userprofile.avatar_url }}" width="240" alt="profile_image">
     <p>Username: {{ user.userprofile }}</p>
     <p>Bio: {{ user.userprofile.bio }}</p>
+    <a href="{% url 'edit-profile' %}" class="btn btn-secondary btn-sm active">
+        Edit profile
+    </a>
 </div>
 
 
