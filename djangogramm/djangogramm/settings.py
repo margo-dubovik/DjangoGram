@@ -137,6 +137,10 @@ INTERNAL_IPS = [
     # ...
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ancient-wave-25531.herokuapp.com'
+]
+
 LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = "/"
 
