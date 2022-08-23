@@ -1,1 +1,1 @@
-python manage.py runserver
+python djangogramm/manage.py runserver
