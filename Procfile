@@ -1,1 +1,1 @@
-python app.py
+web: waitress-serve --listen=*:8000 djangogramm.wsgi:application
