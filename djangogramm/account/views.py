@@ -36,8 +36,10 @@ def edit_profile(request):
         avatar = request.FILES.get('avatar')
         bio = request.POST['bio']
         profile = request.user.userprofile
-        profile.avatar = avatar
-        profile.bio = bio
+        if avatar:
+            profile.avatar = avatar
+        if bio:
+            profile.bio = bio
         profile.save()
         return redirect('/account/profile')
     else:
