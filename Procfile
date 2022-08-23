@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT djangogramm.wsgi:application
+web: waitress-serve --listen=*:8000 djangogramm.wsgi:application
