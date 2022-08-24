@@ -16,7 +16,7 @@ def test_userprofile_str(django_user_model):
 def test_userprofile_avatar_url_default(django_user_model):
     testuser = django_user_model.objects.create_user("test_user")
     userprofile = UserProfile(user=testuser, bio="some bio")
-    assert userprofile.avatar_url == f"{settings.MEDIA_URL}/profile_image/default_profile_img.jpg"
+    assert userprofile.avatar_url == f"{settings.MEDIA_URL}profile_image/default_profile_img.jpg"
 
 @pytest.mark.django_db
 def test_userprofile_avatar_url(django_user_model):

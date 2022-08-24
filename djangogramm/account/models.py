@@ -19,7 +19,7 @@ class UserProfile(models.Model):
         if self.avatar:
             return self.avatar.url
         else:
-            return f"{settings.MEDIA_URL}/profile_image/default_profile_img.jpg"
+            return f"{settings.MEDIA_URL}profile_image/default_profile_img.jpg"
 
 
 def create_user_profile(sender, instance, created, **kwargs):
