@@ -2,8 +2,11 @@ import pytest
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+from post.models import Post
 from post import views
 
+
+@pytest.mark.skip
 @pytest.mark.django_db
 def test_new_post(client, testuser):
     client.force_login(testuser)
@@ -37,3 +40,24 @@ def test_new_post(client, testuser):
     assert all(tag in str(resp.content) for tag in all_tags)
 
 
+pytest.mark.django_db
+
+
+def test_all_posts(client, testuser, post1, post2):
+    client.force_login(testuser)
+
+    url = reverse(views.all_posts, kwargs={'tag_slug': 'tag1'})
+    resp = client.get(url)
+    items_in = [str(post1.userprofile), post1.title, post1.body, str(post2.userprofile), post2.title, post2.body]
+
+    assert resp.status_code == 200
+    assert all(item in str(resp.content) for item in items_in)
+
+    url = reverse(views.all_posts, kwargs={'tag_slug': 'tag2'})
+    resp = client.get(url)
+    items_in = [str(post1.userprofile), post1.title, post1.body, ]
+    items_notin = [post2.title, post2.body]
+
+    assert resp.status_code == 200
+    assert all(item in str(resp.content) for item in items_in)
+    assert all(item not in str(resp.content) for item in items_notin)
