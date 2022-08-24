@@ -46,9 +46,15 @@ pytest.mark.django_db
 def test_all_posts(client, testuser, post1, post2):
     client.force_login(testuser)
 
-    url = reverse(views.all_posts, kwargs={'tag_slug': 'tag1'})
+    url = reverse(views.all_posts)
     resp = client.get(url)
     items_in = [str(post1.userprofile), post1.title, post1.body, str(post2.userprofile), post2.title, post2.body]
+
+    assert resp.status_code == 200
+    assert all(item in str(resp.content) for item in items_in)
+
+    url = reverse(views.all_posts, kwargs={'tag_slug': 'tag1'})
+    resp = client.get(url)
 
     assert resp.status_code == 200
     assert all(item in str(resp.content) for item in items_in)
