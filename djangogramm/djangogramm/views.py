@@ -4,4 +4,4 @@ def home(request):
     if request.user.is_authenticated:
         return render(request, "base.html")
     else:
-        return render(request, "guest_base.html")
+        return render(request, "guest_home.html")
