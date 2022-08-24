@@ -6,7 +6,6 @@ from post.models import Post
 from post import views
 
 
-@pytest.mark.skip
 @pytest.mark.django_db
 def test_new_post(client, testuser):
     client.force_login(testuser)
@@ -40,9 +39,7 @@ def test_new_post(client, testuser):
     assert all(tag in str(resp.content) for tag in all_tags)
 
 
-pytest.mark.django_db
-
-
+@pytest.mark.django_db
 def test_all_posts(client, testuser, post1, post2):
     client.force_login(testuser)
 
@@ -67,3 +64,40 @@ def test_all_posts(client, testuser, post1, post2):
     assert resp.status_code == 200
     assert all(item in str(resp.content) for item in items_in)
     assert all(item not in str(resp.content) for item in items_notin)
+
+
+@pytest.mark.django_db
+def test_post_details(client, testuser, post1):
+    client.force_login(testuser)
+
+    url = reverse(views.post_details, kwargs={'pk': post1.pk})
+    resp = client.get(url)
+    items_in = [str(post1.userprofile), post1.title, post1.body, ]
+    print("content=", resp.content)
+    assert resp.status_code == 200
+    assert all(item in str(resp.content) for item in items_in)
+
+
+@pytest.mark.django_db
+def test_like_view(client, testuser, post1):
+    client.force_login(testuser)
+
+    url = reverse(views.like_view, kwargs={'pk': post1.pk})  # like
+    resp = client.post(url, {'post_id': post1.id})
+    assert resp.status_code == 302
+    assert resp.url == f"/post/{post1.pk}"
+
+    url = reverse(views.post_details, kwargs={'pk': post1.pk})  # check if post is liked
+    resp = client.get(url)
+    assert resp.status_code == 200
+    assert "1 like(s)" in str(resp.content)
+
+    url = reverse(views.like_view, kwargs={'pk': post1.pk})  # unlike
+    resp = client.post(url, {'post_id': post1.id})
+    assert resp.status_code == 302
+    assert resp.url == f"/post/{post1.pk}"
+
+    url = reverse(views.post_details, kwargs={'pk': post1.pk})  # check if post is unliked
+    resp = client.get(url)
+    assert resp.status_code == 200
+    assert "0 like(s)" in str(resp.content)
