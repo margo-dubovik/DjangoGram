@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+
 from .forms import PostForm
 from .models import Post, Image
 
 from taggit.models import Tag
-from account.models import UserProfile
+
 
 @login_required
 def new_post(request):

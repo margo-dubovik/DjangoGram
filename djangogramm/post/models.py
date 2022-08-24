@@ -4,8 +4,6 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 
 
-
-
 class Post(models.Model):
     userprofile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
