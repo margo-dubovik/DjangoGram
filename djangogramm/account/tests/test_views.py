@@ -55,7 +55,7 @@ def test_register_form_not_valid(client):
 @pytest.mark.django_db
 def test_view_profile(client, testuser):
     client.force_login(testuser)
-    url = reverse(views.view_profile)
+    url = reverse(views.view_profile, kwargs={'pk': testuser.pk})
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -79,8 +79,8 @@ def test_edit_profile(client, testuser):
 
     resp = client.post(url, form_data)
     assert resp.status_code == 302
-    assert resp.url == "/account/profile"
+    assert resp.url == f"/account/profile/{testuser.pk}"
 
-    url = reverse(views.view_profile)
+    url = reverse(views.view_profile, kwargs={'pk': testuser.pk})
     resp = client.get(url)
     assert 'new user1 bio' in str(resp.content)

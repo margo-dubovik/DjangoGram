@@ -28,8 +28,9 @@ def view_profile(request, pk):
     current_user = request.user
 
     followed = False
-    if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
-        followed = True
+    if profile_owner.id != current_user.id:
+        if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
+            followed = True
 
     return render(request, 'account/profile.html',
                   {'profile_owner': profile_owner,
@@ -58,6 +59,6 @@ def edit_profile(request):
         if bio:
             profile.bio = bio
         profile.save()
-        return redirect('/account/profile')
+        return redirect(f'/account/profile/{request.user.pk}')
     else:
         return render(request, 'account/edit_profile.html')
