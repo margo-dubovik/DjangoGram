@@ -22,8 +22,12 @@
         </form>
     {% endif %}
     <div>
-        <small><strong>{{ profile_owner.userprofile.total_followers }}</strong> followers</small>
-        <small><strong>{{ profile_owner.userprofile.total_following }}</strong> following</small>
+        <a href="{% url 'profile-followers' profile_owner.pk %}" class="link-dark text-decoration-none">
+            <small><strong>{{ profile_owner.userprofile.total_followers }}</strong> followers</small>
+        </a>
+        <a href="{% url 'profile-following' profile_owner.pk %}" class="link-dark text-decoration-none">
+            <small><strong>{{ profile_owner.userprofile.total_following }}</strong> following</small>
+        </a>
     </div>
 </div>
 

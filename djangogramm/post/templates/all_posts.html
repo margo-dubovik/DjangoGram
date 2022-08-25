@@ -9,8 +9,13 @@
     <ul class="list-group">
         {% for post in post_list %}
         <li class="list-group-item">
-            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by
-            <a href="{% url 'view-profile' post.userprofile.user.pk %}">{{ post.userprofile }}</a>
+            <a href="{% url 'post-details' post.pk %}" class="text-decoration-none">
+                {{ post.title }}
+            </a>
+            by
+            <a href="{% url 'view-profile' post.userprofile.user.pk %}" class="link-dark text-decoration-none">
+                {{ post.userprofile }}
+            </a>
             <p><small>{{ post.date }}</small></p>
             {{ post.body }}
             <br/>
