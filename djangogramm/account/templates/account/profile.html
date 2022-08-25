@@ -6,10 +6,25 @@
     <p>Username: {{ profile_owner.userprofile }}</p>
     <p>Bio: {{ profile_owner.userprofile.bio }}</p>
     {% if current_user.pk == profile_owner.pk %}
-        <a href="{% url 'edit-profile' %}" class="btn btn-secondary btn-sm active">
+        <a href="{% url 'edit-profile' %}" class="btn btn-outline-secondary btn-sm">
             Edit profile
         </a>
+    {% else %}
+        <form action="{% url 'follow-user' profile_owner.pk %}" method="POST">
+        {% csrf_token %}
+        {% if followed %}
+            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
+                    class="btn btn-outline-secondary btn-sm">Unfollow</button>
+        {% else %}
+            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
+                    class="btn btn-outline-secondary btn-sm">Follow</button>
+        {% endif %}
+        </form>
     {% endif %}
+    <div>
+        <small><b>{{ profile_owner.userprofile.total_followers }}</b> followers</small>
+        <small><b>{{ profile_owner.userprofile.total_following }}</b> following</small>
+    </div>
 </div>
 
 

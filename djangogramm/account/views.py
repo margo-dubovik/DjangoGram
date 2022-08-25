@@ -26,10 +26,26 @@ def register(request):
 def view_profile(request, pk):
     profile_owner = get_object_or_404(User, pk=pk)
     current_user = request.user
+
+    followed = False
+    if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
+        followed = True
+
     return render(request, 'account/profile.html',
                   {'profile_owner': profile_owner,
-                   'current_user': current_user})
+                   'current_user': current_user,
+                   'followed': followed})
 
+@login_required
+def follow_view(request, pk):
+    profile_owner = get_object_or_404(User, id=request.POST.get('profile_owner_id'))
+    current_user = request.user
+    if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
+        profile_owner.userprofile.followers.remove(request.user)
+    else:
+        profile_owner.userprofile.followers.add(request.user)
+
+    return redirect(f'/account/profile/{pk}')
 
 @login_required
 def edit_profile(request):
