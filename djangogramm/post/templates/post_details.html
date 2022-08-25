@@ -9,6 +9,7 @@
     <p><small>{{ post.date }}</small></p>
     {% for image in post.post_images  %}
         <img src="{{ image.image.url }}" height="400" alt="post_image">
+        <br/>
     {% endfor %}
 
     <br/><br/>
