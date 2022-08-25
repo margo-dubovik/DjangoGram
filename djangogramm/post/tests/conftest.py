@@ -2,7 +2,8 @@ import pytest
 
 from post.models import Post
 
-@pytest.fixture()
+
+@pytest.fixture
 def testuser(db, django_user_model):
     username = "user1"
     password = "testpassword1"
@@ -11,8 +12,9 @@ def testuser(db, django_user_model):
     user.userprofile.save()
     return user
 
-@pytest.fixture()
-def post1(db,testuser):
+
+@pytest.fixture
+def post1(db, testuser):
     post1 = Post(
         userprofile=testuser.userprofile,
         title="post1",
@@ -24,9 +26,10 @@ def post1(db,testuser):
     for tag in post1_tags:
         post1.tags.add(tag)
 
-    return post1\
-
-@pytest.fixture()
+    return post1 \
+ \
+ \
+@pytest.fixture
 def post2(db, testuser):
     post2 = Post(
         userprofile=testuser.userprofile,
