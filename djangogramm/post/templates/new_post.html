@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body %}
+{% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+    </div>
+{% endif %}
+<div class="container">
+    <form id="post_form" method="post" enctype="multipart/form-data">
+        <h1>Add new post</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group m-3">
+            <label>Upload images</label>
+            <input required name="images" type="file" multiple class="form-control-file">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
