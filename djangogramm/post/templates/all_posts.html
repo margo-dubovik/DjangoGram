@@ -11,7 +11,7 @@
         <li>
             <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by
             <a href="{% url 'view-profile' post.userprofile.user.pk %}">{{ post.userprofile }}</a>
-            <br>
+            <p><small>{{ post.date }}</small></p>
             {{ post.body }}
             <br/>
              {% for image in post.post_images %}
