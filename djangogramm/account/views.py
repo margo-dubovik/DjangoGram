@@ -62,3 +62,9 @@ def edit_profile(request):
         return redirect(f'/account/profile/{request.user.pk}')
     else:
         return render(request, 'account/edit_profile.html')
+
+
+@login_required
+def all_users(request):
+    users = User.objects.filter(is_staff=False)
+    return render(request, 'account/all_users.html', {'users': users})

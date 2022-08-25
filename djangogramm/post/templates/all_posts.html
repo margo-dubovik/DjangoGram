@@ -6,9 +6,9 @@
     {% else %}
     <h1>Posts</h1>
     {% endif %}
-    <ul>
+    <ul class="list-group">
         {% for post in post_list %}
-        <li>
+        <li class="list-group-item">
             <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by
             <a href="{% url 'view-profile' post.userprofile.user.pk %}">{{ post.userprofile }}</a>
             <p><small>{{ post.date }}</small></p>
