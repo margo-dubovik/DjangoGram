@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
+from .forms import RegistrationForm
 
 @login_required
 def home(request):
@@ -22,8 +23,12 @@ def register(request):
 
 
 @login_required
-def view_profile(request):
-    return render(request, 'account/profile.html', {'user': request.user})
+def view_profile(request, pk):
+    profile_owner = get_object_or_404(User, pk=pk)
+    current_user = request.user
+    return render(request, 'account/profile.html',
+                  {'profile_owner': profile_owner,
+                   'current_user': current_user})
 
 
 @login_required

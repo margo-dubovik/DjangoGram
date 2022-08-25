@@ -2,12 +2,14 @@
 {% block body %}
 <div class="container">
     <h1>Profile</h1>
-    <img src="{{ user.userprofile.avatar_url }}" width="240" alt="profile_image">
-    <p>Username: {{ user.userprofile }}</p>
-    <p>Bio: {{ user.userprofile.bio }}</p>
-    <a href="{% url 'edit-profile' %}" class="btn btn-secondary btn-sm active">
-        Edit profile
-    </a>
+    <img src="{{ profile_owner.userprofile.avatar_url }}" width="240" alt="profile_image">
+    <p>Username: {{ profile_owner.userprofile }}</p>
+    <p>Bio: {{ profile_owner.userprofile.bio }}</p>
+    {% if current_user.pk == profile_owner.pk %}
+        <a href="{% url 'edit-profile' %}" class="btn btn-secondary btn-sm active">
+            Edit profile
+        </a>
+    {% endif %}
 </div>
 
 

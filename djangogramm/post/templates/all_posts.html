@@ -9,7 +9,9 @@
     <ul>
         {% for post in post_list %}
         <li>
-            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by {{ post.userprofile }}<br>
+            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by
+            <a href="{% url 'view-profile' post.userprofile.user.pk %}">{{ post.userprofile }}</a>
+            <br>
             {{ post.body }}
             <br/>
              {% for image in post.post_images %}
