@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block body %}
 <div class="container">
+    <br/>
+    <a href="{% url 'all-posts' %}" class="btn btn-secondary btn-sm">Back</a>
+    <br/>
     <h1>{{ post.title }}</h1>
     <small>{{ post.userprofile }}</small>
     <p>{{ post.body }}</p>
@@ -28,7 +31,5 @@
                     class="btn btn-primary btn-sm">Like</button> <small>{{ post.total_likes }} like(s)</small>
         {% endif %}
     </form>
-    <br/>
-    <a href="{% url 'all-posts' %}" class="btn btn-secondary">Back</a>
 </div>
 {% endblock %}
