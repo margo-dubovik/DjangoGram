@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
+from .forms import RegistrationForm
 
 @login_required
 def home(request):
@@ -22,9 +23,32 @@ def register(request):
 
 
 @login_required
-def view_profile(request):
-    return render(request, 'account/profile.html', {'user': request.user})
+def view_profile(request, pk):
+    profile_owner = get_object_or_404(User, pk=pk)
+    current_user = request.user
 
+    followed = False
+    if profile_owner.id != current_user.id:
+        if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
+            followed = True
+
+    return render(request, 'account/profile.html',
+                  {'profile_owner': profile_owner,
+                   'current_user': current_user,
+                   'followed': followed})
+
+@login_required
+def follow_view(request, pk):
+    profile_owner = get_object_or_404(User, id=request.POST.get('profile_owner_id'))
+    current_user = request.user
+    if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
+        profile_owner.userprofile.followers.remove(current_user)
+        current_user.userprofile.following.remove(profile_owner)
+    else:
+        profile_owner.userprofile.followers.add(current_user)
+        current_user.userprofile.following.add(profile_owner)
+
+    return redirect(f'/account/profile/{pk}')
 
 @login_required
 def edit_profile(request):
@@ -37,6 +61,27 @@ def edit_profile(request):
         if bio:
             profile.bio = bio
         profile.save()
-        return redirect('/account/profile')
+        return redirect(f'/account/profile/{request.user.pk}')
     else:
         return render(request, 'account/edit_profile.html')
+
+
+@login_required
+def all_users(request):
+    users = User.objects.filter(is_staff=False)
+    title = "Djangogramm users"
+    return render(request, 'account/users_list.html', {'users': users, 'title': title})
+
+@login_required
+def profile_followers(request, pk):
+    profile_owner = get_object_or_404(User, pk=pk)
+    followers = profile_owner.userprofile.followers.all()
+    title = f"{profile_owner} followers"
+    return render(request, 'account/users_list.html', {'users': followers, 'title': title})
+
+@login_required
+def profile_following(request, pk):
+    profile_owner = get_object_or_404(User, pk=pk)
+    following = profile_owner.userprofile.following.all()
+    title = f"{profile_owner} is following"
+    return render(request, 'account/users_list.html', {'users': following, 'title': title})

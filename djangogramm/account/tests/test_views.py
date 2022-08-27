@@ -55,7 +55,7 @@ def test_register_form_not_valid(client):
 @pytest.mark.django_db
 def test_view_profile(client, testuser):
     client.force_login(testuser)
-    url = reverse(views.view_profile)
+    url = reverse(views.view_profile, kwargs={'pk': testuser.pk})
     resp = client.get(url)
 
     assert resp.status_code == 200
@@ -79,8 +79,35 @@ def test_edit_profile(client, testuser):
 
     resp = client.post(url, form_data)
     assert resp.status_code == 302
-    assert resp.url == "/account/profile"
+    assert resp.url == f"/account/profile/{testuser.pk}"
 
-    url = reverse(views.view_profile)
+    url = reverse(views.view_profile, kwargs={'pk': testuser.pk})
     resp = client.get(url)
     assert 'new user1 bio' in str(resp.content)
+
+
+@pytest.mark.django_db
+def test_follow_view(client, testuser, testuser2):
+    client.force_login(testuser)
+
+    url = reverse(views.follow_view, kwargs={'pk': testuser2.pk})  # follow
+    resp = client.post(url, {'profile_owner_id': testuser2.id})
+    assert resp.status_code == 302
+    assert resp.url == f"/account/profile/{testuser2.pk}"
+
+    url = reverse(views.view_profile, kwargs={'pk': testuser2.pk})  # check if post is followed
+    resp = client.get(url)
+    one_follower = "<small><strong>1</strong> followers</small>"
+    assert resp.status_code == 200
+    assert one_follower in str(resp.content)
+
+    url = reverse(views.follow_view, kwargs={'pk': testuser2.pk})  # unfollow
+    resp = client.post(url, {'profile_owner_id': testuser2.id})
+    assert resp.status_code == 302
+    assert resp.url == f"/account/profile/{testuser2.pk}"
+
+    url = reverse(views.view_profile, kwargs={'pk': testuser2.pk})  # check if post is unfollowed
+    resp = client.get(url)
+    no_followers = "<small><strong>0</strong> followers</small>"
+    assert resp.status_code == 200
+    assert no_followers in str(resp.content)

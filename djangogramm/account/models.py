@@ -4,15 +4,21 @@ from django.db.models.signals import post_save
 from django.conf import settings
 
 
-
-# Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500)
     avatar = models.ImageField(upload_to='profile_image', blank=True)
+    followers = models.ManyToManyField(User, related_name='followers')
+    following = models.ManyToManyField(User, related_name='following')
 
     def __str__(self):
         return self.user.username
+
+    def total_followers(self):
+        return self.followers.count()
+
+    def total_following(self):
+        return self.following.count()
 
     @property
     def avatar_url(self):

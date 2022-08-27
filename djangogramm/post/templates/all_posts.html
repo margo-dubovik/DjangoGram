@@ -6,10 +6,17 @@
     {% else %}
     <h1>Posts</h1>
     {% endif %}
-    <ul>
+    <ul class="list-group">
         {% for post in post_list %}
-        <li>
-            <a href="{% url 'post-details' post.pk %}">{{ post.title }}</a> by {{ post.userprofile }}<br>
+        <li class="list-group-item">
+            <a href="{% url 'post-details' post.pk %}" class="text-decoration-none">
+                {{ post.title }}
+            </a>
+            by
+            <a href="{% url 'view-profile' post.userprofile.user.pk %}" class="link-dark text-decoration-none">
+                {{ post.userprofile }}
+            </a>
+            <p><small>{{ post.date }}</small></p>
             {{ post.body }}
             <br/>
              {% for image in post.post_images %}
