@@ -25,18 +25,17 @@
         {% endfor %}
     </p>
 
-    <form id="like_form" action="{% url 'like_post' post.pk %}" method="POST">
-        {% csrf_token %}
+    <div class="container">
         {% if liked %}
             <button type="submit" name="post_id" value="{{ post.id }}"
-                    class="btn btn-outline-danger btn-sm">Unlike</button>
+                    class="btn btn-outline-danger btn-sm like-button">Unlike</button>
             <small>{{ post.total_likes }} like(s)</small>
         {% else %}
             <button type="submit" name="post_id" value="{{ post.id }}"
-                    class="btn btn-outline-primary btn-sm">Like</button>
+                    class="btn btn-outline-primary btn-sm like-button">Like</button>
             <small>{{ post.total_likes }} like(s)</small>
         {% endif %}
-    </form>
+    </div>
 </div>
 
 

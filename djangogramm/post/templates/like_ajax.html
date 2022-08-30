@@ -2,18 +2,17 @@
 {% block javascript %}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#like_form').submit(function(event){
-            event.preventDefault()
+        $('.like-button').click(function(event){
             console.log('works');
-            var form_url = $(this).attr("action");
             var postid = $(this button:first).attr("value");
+            var form_url = "{% url 'like_post' postid %}"
             $.ajax(
             {
                 type: "POST",
                 url: form_url,
                 data:{
                          'post_id': postid,
-                         'csrfmiddlewaretoken': '{% csrf_token %}'
+
                 },
                 dataType: 'json',
                 success: function(result, status){
