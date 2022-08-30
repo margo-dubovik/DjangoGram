@@ -10,7 +10,7 @@
         url: form_url,
         data:{
                  'post_id': postid,
-                 'csrfmiddlewaretoken': '{{ csrf_token }}'
+                 'csrfmiddlewaretoken': '{% csrf_token %}'
         },
         dataType: 'json',
         success: function(result, status){
