@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
+
 <div class="container">
     <br/>
     <a href="{% url 'all-posts' %}" class="btn btn-outline-secondary btn-sm">Back</a>
@@ -24,7 +25,7 @@
         {% endfor %}
     </p>
 
-    <form action="{% url 'like_post' post.pk %}" method="POST">
+    <form id="like_form" action="{% url 'like_post' post.pk %}" method="POST">
         {% csrf_token %}
         {% if liked %}
             <button type="submit" name="post_id" value="{{ post.id }}"
@@ -32,9 +33,12 @@
             <small>{{ post.total_likes }} like(s)</small>
         {% else %}
             <button type="submit" name="post_id" value="{{ post.id }}"
-                    class="btn btn-outline-primary btn-sm">Like</button>
+                    class="btn btn-outline-primary btn-sm like_button">Like</button>
             <small>{{ post.total_likes }} like(s)</small>
         {% endif %}
     </form>
 </div>
+
+
+
 {% endblock %}

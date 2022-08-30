@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block javascript %}
+<script type="text/javascript">
+    $('#like_form').on('submit', function(){
+    var form_url = $(this).attr("action");
+    var postid = $(this button:first).attr("value");
+    $.ajax(
+    {
+        type: "POST",
+        url: form_url,
+        data:{
+                 'post_id': postid,
+                 'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        dataType: 'json',
+        success: function(result, status){
+            alert("result: " + result + "\nStatus: " + status);
+        }
+        error: function (xhr) {
+            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+        }
+     })
+    });
+</script>
+{% endblock %}
