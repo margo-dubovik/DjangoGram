@@ -58,7 +58,7 @@ def post_details(request, pk):
 @login_required
 def like_view(request, pk):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        print("Yes, AJAX!")
+        print("AJAX!")
     else:
         print("not AJAX")
         post = get_object_or_404(Post, id=request.POST.get('post_id'))
