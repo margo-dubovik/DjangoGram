@@ -34,25 +34,19 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(document).on('click','.like-button', function(){
-            console.log('works');
             var csrftoken = $('[name=csrfmiddlewaretoken]').val();
-            console.log('csrftoken', csrftoken);
             var postid = $(this).attr("value");
-            console.log('postid', postid);
             var django_url = "{% url 'like_post' 1 %}";
             var url = django_url.replace('1', postid);
-            console.log('url', url);
             $.ajax(
             {
                 type: "POST",
                 url: url,
                 data:{
-                    'post_id': postid,
                     'csrfmiddlewaretoken': csrftoken,
                 },
                 dataType: 'json',
                 success: function(response){
-                    console.log('success');
                     $("#like_wrapper").html(response['html']);
                 },
                 error: function (xhr) {

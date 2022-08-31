@@ -59,12 +59,7 @@ def post_details(request, pk):
 
 @login_required
 def like_view(request, pk):
-    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        print("AJAX!")
-    else:
-        print("not AJAX")
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    print("current post=", str(post))
+    post = get_object_or_404(Post, pk=pk)
     if post.likes.filter(user_id=request.user.id).exists():
         post.likes.remove(request.user.userprofile)
         liked = False
