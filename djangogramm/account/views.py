@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from .forms import RegistrationForm
+
 
 @login_required
 def home(request):
@@ -37,6 +40,7 @@ def view_profile(request, pk):
                    'current_user': current_user,
                    'followed': followed})
 
+
 @login_required
 def follow_view(request, pk):
     profile_owner = get_object_or_404(User, id=request.POST.get('profile_owner_id'))
@@ -44,11 +48,18 @@ def follow_view(request, pk):
     if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
         profile_owner.userprofile.followers.remove(current_user)
         current_user.userprofile.following.remove(profile_owner)
+        followed = False
     else:
         profile_owner.userprofile.followers.add(current_user)
         current_user.userprofile.following.add(profile_owner)
+        followed = True
 
-    return redirect(f'/account/profile/{pk}')
+    html = render_to_string('account/follow_section.html',
+                            {'profile_owner': profile_owner,
+                             'current_user': current_user,
+                             'followed': followed}, request=request)
+    return JsonResponse({'html': html})
+
 
 @login_required
 def edit_profile(request):
@@ -72,12 +83,14 @@ def all_users(request):
     title = "Djangogramm users"
     return render(request, 'account/users_list.html', {'users': users, 'title': title})
 
+
 @login_required
 def profile_followers(request, pk):
     profile_owner = get_object_or_404(User, pk=pk)
     followers = profile_owner.userprofile.followers.all()
     title = f"{profile_owner} followers"
     return render(request, 'account/users_list.html', {'users': followers, 'title': title})
+
 
 @login_required
 def profile_following(request, pk):

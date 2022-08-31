@@ -1,0 +1,24 @@
+{% if current_user.pk == profile_owner.pk %}
+        <a href="{% url 'edit-profile' %}" class="btn btn-outline-secondary btn-sm">
+            Edit profile
+        </a>
+    {% else %}
+    <div class="container">
+        {% csrf_token %}
+        {% if followed %}
+            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
+                    class="btn btn-outline-secondary btn-sm follow-button">Unfollow</button>
+        {% else %}
+            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
+                    class="btn btn-outline-secondary btn-sm follow-button">Follow</button>
+        {% endif %}
+    </div>
+{% endif %}
+    <div>
+        <a href="{% url 'profile-followers' profile_owner.pk %}" class="link-dark text-decoration-none">
+            <small><strong>{{ profile_owner.userprofile.total_followers }}</strong> followers</small>
+        </a>
+        <a href="{% url 'profile-following' profile_owner.pk %}" class="link-dark text-decoration-none">
+            <small><strong>{{ profile_owner.userprofile.total_following }}</strong> following</small>
+        </a>
+    </div>

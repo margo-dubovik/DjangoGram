@@ -5,31 +5,38 @@
     <img src="{{ profile_owner.userprofile.avatar_url }}" width="240" alt="profile_image">
     <p>Username: {{ profile_owner.userprofile }}</p>
     <p>Bio: {{ profile_owner.userprofile.bio }}</p>
-    {% if current_user.pk == profile_owner.pk %}
-        <a href="{% url 'edit-profile' %}" class="btn btn-outline-secondary btn-sm">
-            Edit profile
-        </a>
-    {% else %}
-        <form action="{% url 'follow-user' profile_owner.pk %}" method="POST">
-        {% csrf_token %}
-        {% if followed %}
-            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
-                    class="btn btn-outline-secondary btn-sm">Unfollow</button>
-        {% else %}
-            <button type="submit" name="profile_owner_id" value="{{ profile_owner.id }}"
-                    class="btn btn-outline-secondary btn-sm">Follow</button>
-        {% endif %}
-        </form>
-    {% endif %}
-    <div>
-        <a href="{% url 'profile-followers' profile_owner.pk %}" class="link-dark text-decoration-none">
-            <small><strong>{{ profile_owner.userprofile.total_followers }}</strong> followers</small>
-        </a>
-        <a href="{% url 'profile-following' profile_owner.pk %}" class="link-dark text-decoration-none">
-            <small><strong>{{ profile_owner.userprofile.total_following }}</strong> following</small>
-        </a>
+
+    <div id="follow_wrapper">
+        {% include 'account/follow_section.html' %}
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click','.follow-button', function(){
+            var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+            var profile_owner_id = $(this).attr("value");
+            var django_url = "{% url 'follow-user' 1 %}";
+            var url = django_url.replace('1', profile_owner_id);
+            $.ajax(
+            {
+                type: "POST",
+                url: url,
+                data:{
+                    'profile_owner_id': profile_owner_id,
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                dataType: 'json',
+                success: function(response){
+                    $("#follow_wrapper").html(response['html']);
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+             })
+        })
+       });
+</script>
 
 {% endblock %}
