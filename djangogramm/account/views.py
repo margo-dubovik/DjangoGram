@@ -43,7 +43,7 @@ def view_profile(request, pk):
 
 @login_required
 def follow_view(request, pk):
-    profile_owner = get_object_or_404(User, id=request.POST.get('profile_owner_id'))
+    profile_owner = get_object_or_404(User, pk=pk)
     current_user = request.user
     if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
         profile_owner.userprofile.followers.remove(current_user)
