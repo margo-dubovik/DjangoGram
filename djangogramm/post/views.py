@@ -71,5 +71,5 @@ def like_view(request, pk):
     else:
         post.likes.add(request.user.userprofile)
         liked = True
-    html = render_to_string('like_section.html', {'post': post, 'liked': liked})
+    html = render_to_string('like_section.html', {'post': post, 'liked': liked}, request=request)
     return JsonResponse({'html': html})
