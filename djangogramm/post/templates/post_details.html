@@ -25,19 +25,42 @@
         {% endfor %}
     </p>
 
-    <div class="container">
-        {% if liked %}
-            <button type="submit" name="post_id" value="{{ post.id }}"
-                    class="btn btn-outline-danger btn-sm like-button">Unlike</button>
-            <small>{{ post.total_likes }} like(s)</small>
-        {% else %}
-            <button type="submit" name="post_id" value="{{ post.id }}"
-                    class="btn btn-outline-primary btn-sm like-button">Like</button>
-            <small>{{ post.total_likes }} like(s)</small>
-        {% endif %}
+    <div id="like_wrapper">
+        {% include 'like_section.html' %}
     </div>
 </div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.like-button').click(function(){
+            console.log('works');
+            var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+            console.log('csrftoken', csrftoken);
+            var postid = $(this).attr("value");
+            console.log('postid', postid);
+            var django_url = "{% url 'like_post' 1 %}";
+            var url = django_url.replace('1', postid);
+            console.log('url', url);
+            $.ajax(
+            {
+                type: "POST",
+                url: url,
+                data:{
+                    'post_id': postid,
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                dataType: 'json',
+                success: function(response){
+                    console.log('success');
+                    $("#like_wrapper").html(response['html']);
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+             })
+        })
+       });
+</script>
 
 {% endblock %}

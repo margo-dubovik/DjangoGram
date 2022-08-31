@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
+from django.template.loader import render_to_string
 
 from .forms import PostForm
 from .models import Post, Image
@@ -61,11 +63,13 @@ def like_view(request, pk):
         print("AJAX!")
     else:
         print("not AJAX")
-        post = get_object_or_404(Post, id=request.POST.get('post_id'))
-        if post.likes.filter(user_id=request.user.id).exists():
-            post.likes.remove(request.user.userprofile)
-        else:
-            post.likes.add(request.user.userprofile)
-
-        return redirect(f'/post/{pk}')
-
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    print("current post=", str(post))
+    if post.likes.filter(user_id=request.user.id).exists():
+        post.likes.remove(request.user.userprofile)
+        liked = False
+    else:
+        post.likes.add(request.user.userprofile)
+        liked = True
+    html = render_to_string('like_section.html', {'post': post, 'liked': liked})
+    return JsonResponse({'html': html})

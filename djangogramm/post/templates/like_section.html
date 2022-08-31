@@ -1,0 +1,12 @@
+<div class="container">
+    {% csrf_token %}
+    {% if liked %}
+        <button name="post_id" value="{{ post.id }}"
+                class="btn btn-outline-danger btn-sm like-button">Unlike</button>
+        <small>{{ post.total_likes }} like(s)</small>
+    {% else %}
+        <button name="post_id" value="{{ post.id }}"
+                class="btn btn-outline-primary btn-sm like-button">Like</button>
+        <small>{{ post.total_likes }} like(s)</small>
+    {% endif %}
+</div>
