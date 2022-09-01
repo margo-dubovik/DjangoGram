@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from .forms import RegistrationForm
+from post.models import Post
 
 
 @login_required
@@ -35,10 +36,13 @@ def view_profile(request, pk):
         if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
             followed = True
 
+    user_posts = Post.objects.filter(userprofile=profile_owner.userprofile)
+
     return render(request, 'account/profile.html',
                   {'profile_owner': profile_owner,
                    'current_user': current_user,
-                   'followed': followed})
+                   'followed': followed,
+                   'user_posts': user_posts,})
 
 
 @login_required
