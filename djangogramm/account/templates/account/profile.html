@@ -4,6 +4,9 @@
     <h1>Profile</h1>
     <img src="{{ profile_owner.userprofile.avatar_url }}" width="240" alt="profile_image">
     <p>Username: {{ profile_owner.userprofile }}</p>
+    <p>First name: {{ profile_owner.first_name }}</p>
+    <p>Last name: {{ profile_owner.last_name }}</p>
+    <p>Email: {{ profile_owner.email }}</p>
     <p>Bio: {{ profile_owner.userprofile.bio }}</p>
 
     <div id="follow_wrapper">
