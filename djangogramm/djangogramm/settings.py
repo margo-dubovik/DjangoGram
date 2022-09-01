@@ -161,8 +161,7 @@ load_dotenv()
 
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('MY_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('MY_GITHUB_SECRET_KEY')
-SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
-SOCIAL_AUTH_USER_FIELDS = ['email', 'username']
+
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('MY_GOOGLE_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('MY_GOOGLE_SECRET_KEY')
