@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from .forms import PostForm
 from .models import Post, Image
@@ -57,11 +59,12 @@ def post_details(request, pk):
 
 @login_required
 def like_view(request, pk):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post = get_object_or_404(Post, pk=pk)
     if post.likes.filter(user_id=request.user.id).exists():
         post.likes.remove(request.user.userprofile)
+        liked = False
     else:
         post.likes.add(request.user.userprofile)
-
-    return redirect(f'/post/{pk}')
-
+        liked = True
+    html = render_to_string('like_section.html', {'post': post, 'liked': liked}, request=request)
+    return JsonResponse({'html': html})
