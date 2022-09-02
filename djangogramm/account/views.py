@@ -45,7 +45,8 @@ def register(request):
                 to=[user.email]
             )
             email.send()
-            messages.info(request, 'We sent you an email to confirm your email address and complete the registration')
+            messages.info(request, 'We sent you an email to confirm your email address and complete the registration. '
+                                   'If you do not see the email in a few minutes, check your spam folder.')
             return redirect('/account/login')
 
         return render(request, 'account/reg_form.html', {'form': form})
@@ -63,7 +64,7 @@ def activate_user(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'Your email is confirmed. Now you can login your account.')
+        messages.success(request, 'Your email is confirmed. Now you can log in to your account.')
         return redirect('/account/login')
     else:
         return HttpResponse('Activation link is invalid!')
