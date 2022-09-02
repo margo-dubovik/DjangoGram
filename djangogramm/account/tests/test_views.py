@@ -75,6 +75,8 @@ def test_edit_profile(client, testuser):
     form_data = {
         'avatar': newavatar,
         'bio': 'new user1 bio',
+        'first_name': 'new usr1_first_name',
+        'last_name': 'new usr1_last_name',
     }
 
     resp = client.post(url, form_data)
@@ -84,6 +86,8 @@ def test_edit_profile(client, testuser):
     url = reverse(views.view_profile, kwargs={'pk': testuser.pk})
     resp = client.get(url)
     assert 'new user1 bio' in str(resp.content)
+    assert 'new usr1_first_name' in str(resp.content)
+    assert 'new usr1_last_name' in str(resp.content)
 
 
 @pytest.mark.django_db
@@ -92,8 +96,8 @@ def test_follow_view(client, testuser, testuser2):
 
     url = reverse(views.follow_view, kwargs={'pk': testuser2.pk})  # follow
     resp = client.post(url, {'profile_owner_id': testuser2.id})
-    assert resp.status_code == 302
-    assert resp.url == f"/account/profile/{testuser2.pk}"
+    assert resp.status_code == 200
+    assert resp['content-type'] == "application/json"
 
     url = reverse(views.view_profile, kwargs={'pk': testuser2.pk})  # check if post is followed
     resp = client.get(url)
@@ -103,8 +107,8 @@ def test_follow_view(client, testuser, testuser2):
 
     url = reverse(views.follow_view, kwargs={'pk': testuser2.pk})  # unfollow
     resp = client.post(url, {'profile_owner_id': testuser2.id})
-    assert resp.status_code == 302
-    assert resp.url == f"/account/profile/{testuser2.pk}"
+    assert resp.status_code == 200
+    assert resp['content-type'] == "application/json"
 
     url = reverse(views.view_profile, kwargs={'pk': testuser2.pk})  # check if post is unfollowed
     resp = client.get(url)

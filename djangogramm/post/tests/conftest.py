@@ -26,9 +26,9 @@ def post1(db, testuser):
     for tag in post1_tags:
         post1.tags.add(tag)
 
-    return post1 \
- \
- \
+    return post1
+
+
 @pytest.fixture
 def post2(db, testuser):
     post2 = Post(

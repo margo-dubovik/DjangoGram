@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'account',
     'post',
     'taggit',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    # 'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'djangogramm.urls'
@@ -67,6 +67,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -85,6 +88,7 @@ DATABASES = {
     }
 }
 import dj_database_url
+
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 
@@ -141,18 +145,45 @@ CSRF_TRUSTED_ORIGINS = [
     'https://ancient-wave-25531.herokuapp.com'
 ]
 
-LOGIN_REDIRECT_URL = '/account/'
-LOGOUT_REDIRECT_URL = "/"
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
 
-django_heroku.settings(locals())
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get('MY_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('MY_GITHUB_SECRET_KEY')
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+SOCIAL_AUTH_USER_FIELDS = ['username', 'email']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('MY_GOOGLE_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('MY_GOOGLE_SECRET_KEY')
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/account/'
+
+LOGIN_REDIRECT_URL = '/account/'
+LOGOUT_REDIRECT_URL = "/"
+
+django_heroku.settings(locals())
+
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = os.environ.get('MY_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('MY_AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('MY_AWS_STORAGE_BUCKET_NAME')
 AWS_QUERYSTRING_AUTH = False
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('APP_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

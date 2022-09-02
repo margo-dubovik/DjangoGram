@@ -35,6 +35,7 @@ def new_post(request):
         postForm = PostForm()
     return render(request, 'new_post.html', {'form': postForm})
 
+
 @login_required
 def all_posts(request, tag_slug=None):
     tag = None
@@ -44,6 +45,7 @@ def all_posts(request, tag_slug=None):
     else:
         post_list = Post.objects.all()
     return render(request, 'all_posts.html', {'post_list': post_list, 'tag': tag})
+
 
 @login_required
 def post_details(request, pk):
