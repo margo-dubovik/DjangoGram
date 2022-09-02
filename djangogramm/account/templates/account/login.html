@@ -1,6 +1,15 @@
 {% extends 'guest_base.html' %}
 {% block body %}
 <div class="container">
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     <h2>Log In</h2>
     <form method="post">
         {% csrf_token %}
