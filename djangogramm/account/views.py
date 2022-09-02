@@ -79,7 +79,7 @@ def view_profile(request, pk):
         if profile_owner.userprofile.followers.filter(id=current_user.id).exists():
             followed = True
 
-    user_posts = Post.objects.filter(userprofile=profile_owner.userprofile)
+    user_posts = Post.objects.filter(userprofile=profile_owner.userprofile).order_by('-date')
 
     return render(request, 'account/profile.html',
                   {'profile_owner': profile_owner,

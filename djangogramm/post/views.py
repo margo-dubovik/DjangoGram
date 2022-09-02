@@ -41,9 +41,9 @@ def all_posts(request, tag_slug=None):
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
-        post_list = Post.objects.filter(tags__in=[tag])
+        post_list = Post.objects.filter(tags__in=[tag]).order_by('-date')
     else:
-        post_list = Post.objects.all()
+        post_list = Post.objects.all().order_by('-date')
     return render(request, 'all_posts.html', {'post_list': post_list, 'tag': tag})
 
 
