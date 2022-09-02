@@ -7,6 +7,7 @@ def testuser(db, django_user_model):
     password = "testpassword1"
     user = django_user_model.objects.create_user(username=username, password=password)
     user.userprofile.bio = "user1 bio"
+    user.email = "user1_email@gmail.com"
     user.userprofile.save()
     return user
 
@@ -17,5 +18,6 @@ def testuser2(db, django_user_model):
     password = "testpassword2"
     user = django_user_model.objects.create_user(username=username, password=password)
     user.userprofile.bio = "user2 bio"
+    user.email = "user2_email@gmail.com"
     user.userprofile.save()
     return user

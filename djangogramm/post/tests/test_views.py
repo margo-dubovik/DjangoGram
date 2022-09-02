@@ -84,8 +84,8 @@ def test_like_view(client, testuser, post1):
 
     url = reverse(views.like_view, kwargs={'pk': post1.pk})  # like
     resp = client.post(url, {'post_id': post1.id})
-    assert resp.status_code == 302
-    assert resp.url == f"/post/{post1.pk}"
+    assert resp.status_code == 200
+    assert resp['content-type'] == 'application/json'
 
     url = reverse(views.post_details, kwargs={'pk': post1.pk})  # check if post is liked
     resp = client.get(url)
@@ -94,8 +94,8 @@ def test_like_view(client, testuser, post1):
 
     url = reverse(views.like_view, kwargs={'pk': post1.pk})  # unlike
     resp = client.post(url, {'post_id': post1.id})
-    assert resp.status_code == 302
-    assert resp.url == f"/post/{post1.pk}"
+    assert resp.status_code == 200
+    assert resp['content-type'] == 'application/json'
 
     url = reverse(views.post_details, kwargs={'pk': post1.pk})  # check if post is unliked
     resp = client.get(url)

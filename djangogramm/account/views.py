@@ -113,7 +113,6 @@ def edit_profile(request):
     if request.method == 'POST':
         avatar = request.FILES.get('avatar')
         bio = request.POST['bio']
-        email = request.POST['email']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         profile = request.user.userprofile
@@ -122,8 +121,6 @@ def edit_profile(request):
             profile.avatar = avatar
         if bio:
             profile.bio = bio
-        if email:
-            profile_owner.email = email
         if first_name:
             profile_owner.first_name = first_name
         if last_name:
