@@ -59,7 +59,7 @@
         {% endfor %}
     </p>
 
-    <div id="like_wrapper">
+    <div id="like_wrapper-{{ post.id }}">
         {% include 'like_section.html' %}
     </div>
 </div>
@@ -81,7 +81,7 @@
                 },
                 dataType: 'json',
                 success: function(response){
-                    $("#like_wrapper").html(response['html']);
+                    $("#like_wrapper-"+postid").html(response['html']);
                 },
                 error: function (xhr) {
                     alert("An error occurred: " + xhr.status + " " + xhr.statusText);
