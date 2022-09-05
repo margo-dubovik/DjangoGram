@@ -30,8 +30,39 @@
                 </a>
             {% endfor %}
             </p>
+            <div id="like_wrapper-{{ post.id }}">
+                {% include 'like_section.html' %}
+            </div>
         </li>
         {% endfor %}
     </ul>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click','.like-button', function(){
+            var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+            var postid = $(this).attr("value");
+            var django_url = "{% url 'like_post' 1 %}";
+            var url = django_url.replace('1', postid);
+            $.ajax(
+            {
+                type: "POST",
+                url: url,
+                data:{
+                    'csrfmiddlewaretoken': csrftoken,
+                },
+                dataType: 'json',
+                success: function(response){
+                    $("#like_wrapper-"+postid).html(response['html']);
+                },
+                error: function (xhr) {
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                }
+             })
+        })
+       });
+</script>
+
 {% endblock %}
