@@ -16,4 +16,5 @@ urlpatterns = [
     path('all/', views.all_users, name="all-users"),
     path('profile/<int:pk>/followers', views.profile_followers, name="profile-followers"),
     path('profile/<int:pk>/following', views.profile_following, name="profile-following"),
+    path('delete/', views.delete_user, name="delete-user"),
     ]

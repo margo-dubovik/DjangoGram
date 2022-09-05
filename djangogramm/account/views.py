@@ -31,12 +31,12 @@ def register(request):
             current_site = get_current_site(request)
             email_subject = "Welcome to DjangoGram! Confirm Your Email"
             email_body = render_to_string('account/account_activation_email.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': account_activation_token.make_token(user),
-                }, request=request,
-            )
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            }, request=request,
+                                          )
 
             email = EmailMessage(
                 subject=email_subject,
@@ -69,6 +69,7 @@ def activate_user(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+
 @login_required
 def view_profile(request, pk):
     profile_owner = get_object_or_404(User, pk=pk)
@@ -85,7 +86,7 @@ def view_profile(request, pk):
                   {'profile_owner': profile_owner,
                    'current_user': current_user,
                    'followed': followed,
-                   'user_posts': user_posts,})
+                   'user_posts': user_posts, })
 
 
 @login_required
@@ -153,3 +154,10 @@ def profile_following(request, pk):
     following = profile_owner.userprofile.following.all()
     title = f"{profile_owner} is following"
     return render(request, 'account/users_list.html', {'users': following, 'title': title})
+
+
+@login_required
+def delete_user(request):
+    request.user.delete()
+    messages.info(request, 'Your account was deleted successfully. Bye Bye!')
+    return redirect('/')
