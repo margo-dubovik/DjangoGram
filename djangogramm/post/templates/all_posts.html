@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
+{% load post_custom_filters %}
+
 <div class="container">
     {% if tag %}
     <h1>Posts tagged with "{{ tag.name }}"</h1>

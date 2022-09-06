@@ -1,6 +1,6 @@
 <div class="container">
     {% csrf_token %}
-    {% if liked %}
+    {% if liked_status|get_value:post.id %}
         <button name="post_id" value="{{ post.id }}"
                 class="btn btn-outline-danger btn-sm like-button">Unlike</button>
         <small>{{ post.total_likes }} like(s)</small>

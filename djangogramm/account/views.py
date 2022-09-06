@@ -82,11 +82,19 @@ def view_profile(request, pk):
 
     user_posts = Post.objects.filter(userprofile=profile_owner.userprofile).order_by('-date')
 
+    liked_status = {}
+    for post in user_posts:
+        liked = False
+        if post.likes.filter(user_id=current_user.id).exists():
+            liked = True
+        liked_status[post.id] = liked
+
     return render(request, 'account/profile.html',
                   {'profile_owner': profile_owner,
                    'current_user': current_user,
                    'followed': followed,
-                   'user_posts': user_posts, })
+                   'user_posts': user_posts,
+                   'liked_status': liked_status, })
 
 
 @login_required
@@ -136,7 +144,7 @@ def edit_profile(request):
 @login_required
 def all_users(request):
     users = User.objects.filter(is_staff=False)
-    title = "Djangogramm users"
+    title = "DjangoGram users"
     return render(request, 'account/users_list.html', {'users': users, 'title': title})
 
 

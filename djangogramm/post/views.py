@@ -44,29 +44,42 @@ def all_posts(request, tag_slug=None):
         post_list = Post.objects.filter(tags__in=[tag]).order_by('-date')
     else:
         post_list = Post.objects.all().order_by('-date')
-    return render(request, 'all_posts.html', {'post_list': post_list, 'tag': tag})
+
+    liked_status = {}
+    for post in post_list:
+        liked = False
+        if post.likes.filter(user_id=request.user.id).exists():
+            liked = True
+        liked_status[post.id] = liked
+    return render(request, 'all_posts.html', {'post_list': post_list, 'tag': tag, 'liked_status': liked_status})
 
 
 @login_required
 def post_details(request, pk):
     post = get_object_or_404(Post, pk=pk)
-
+    liked_status = {}
     liked = False
     if post.likes.filter(user_id=request.user.id).exists():
         liked = True
 
+    liked_status[post.id] = liked
     return render(request, 'post_details.html',
-                  {'post': post, 'liked': liked})
+                  {'post': post, 'liked_status': liked_status})
 
 
 @login_required
 def like_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    liked_status = {}
     if post.likes.filter(user_id=request.user.id).exists():
         post.likes.remove(request.user.userprofile)
         liked = False
+        print("unliked a post")
     else:
         post.likes.add(request.user.userprofile)
         liked = True
-    html = render_to_string('like_section.html', {'post': post, 'liked': liked}, request=request)
+        print("liked a post")
+    liked_status[post.id] = liked
+    html = render_to_string('like_section.html', {'post': post, 'liked_status': liked_status},
+                            request=request)
     return JsonResponse({'html': html})
