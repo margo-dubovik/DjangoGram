@@ -74,11 +74,9 @@ def like_view(request, pk):
     if post.likes.filter(user_id=request.user.id).exists():
         post.likes.remove(request.user.userprofile)
         liked = False
-        print("unliked a post")
     else:
         post.likes.add(request.user.userprofile)
         liked = True
-        print("liked a post")
     liked_status[post.id] = liked
     html = render_to_string('like_section.html', {'post': post, 'liked_status': liked_status},
                             request=request)
