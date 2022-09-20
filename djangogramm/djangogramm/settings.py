@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import django_heroku
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^8dchv*57s7yu&8zc$=-^np6y$rh=pe@g0%^f!uiirjh67!w(8'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,11 +157,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
 
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('MY_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('MY_GITHUB_SECRET_KEY')
